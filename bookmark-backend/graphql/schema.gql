@@ -1,14 +1,15 @@
 type Bookmark {
     id: ID!
-    title: String
+    title: String!
+    bookmark: String!
 }
 
 type Query {
-    getBookmarks: [Note!]
+    getBookmarks: [Bookmark!]
 }
 
 type Mutation {
-    addBookmark(title: String!): Bookmark!
+    addBookmark(title: String!, bookmark: String!): Bookmark!
     deleteBookmark(id: String!): String!
-    updateBookmark(id: String!, title: String!): Bookmark!
+    updateBookmark(id: String!, title: String!, bookmark: String!): Bookmark!
 }

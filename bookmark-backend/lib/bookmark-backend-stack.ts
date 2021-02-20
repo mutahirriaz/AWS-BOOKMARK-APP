@@ -26,7 +26,7 @@ export class BookmarkBackendStack extends cdk.Stack {
       },
     });
 
-    const datasource = api.addDynamoDbDataSource('DataSource', dynamoDBTable);
+    const datasource = api.addDynamoDbDataSource('appsyncDatasource', dynamoDBTable);
 
     datasource.createResolver({
       typeName: 'Mutation',
@@ -47,8 +47,9 @@ export class BookmarkBackendStack extends cdk.Stack {
     datasource.createResolver({
       typeName: 'Mutation',
       fieldName: 'deleteBookmark',
-      requestMappingTemplate: appsync.MappingTemplate.dynamoDbDeleteItem('id', 'id')
-    })
+      requestMappingTemplate: appsync.MappingTemplate.dynamoDbDeleteItem('id', 'id'),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
 
     datasource.createResolver({
       typeName: 'Mutation',
@@ -57,7 +58,7 @@ export class BookmarkBackendStack extends cdk.Stack {
         appsync.PrimaryKey.partition('id').is('id'),
         appsync.Values.projecting(),
       ),
-      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem()
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
 
   }
